@@ -1,6 +1,5 @@
 import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_study_app/widget/BigCard.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -19,7 +18,7 @@ class MyApp extends StatelessWidget {
         title: 'Namer App',
         theme: ThemeData(
           useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
         ),
         home: const MyHomePage(),
       ),
@@ -41,27 +40,22 @@ class MyHomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var appState = context.watch<MyAppState>();
-    var pair = appState.current;
     return Scaffold(
       appBar: AppBar(
         title: const Text("실험실"),
         centerTitle: true,
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            const Text('A random idea:'),
-            BigCard(pair: pair),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: () {
-                appState.getNext();
-              },
-              child: const Text('Next'),
-            ),
-          ],
-        ),
+      body: Column(
+        children: [
+          const Text('A random idea:'),
+          Text(appState.current.asLowerCase),
+          ElevatedButton(
+            onPressed: () {
+              appState.getNext();
+            },
+            child: const Text('Next'),
+          ),
+        ],
       ),
     );
   }
