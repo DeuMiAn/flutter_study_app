@@ -1,6 +1,7 @@
-import 'package:english_words/english_words.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:get/get.dart';
+
+import 'controller/controller.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,25 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => MyAppState(),
-      child: MaterialApp(
-        title: 'Namer App',
-        theme: ThemeData(
-          useMaterial3: true,
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
-        ),
-        home: const MyHomePage(),
+    return MaterialApp(
+      title: 'Namer App',
+      theme: ThemeData(
+        useMaterial3: true,
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepOrange),
       ),
+      home: const MyHomePage(),
     );
-  }
-}
-
-class MyAppState extends ChangeNotifier {
-  var current = WordPair.random();
-  void getNext() {
-    current = WordPair.random();
-    notifyListeners();
   }
 }
 
@@ -39,23 +29,28 @@ class MyHomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var appState = context.watch<MyAppState>();
     return Scaffold(
       appBar: AppBar(
-        title: const Text("실험실"),
+        title: const Text("GetX"),
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          const Text('A random idea:'),
-          Text(appState.current.asLowerCase),
-          ElevatedButton(
-            onPressed: () {
-              appState.getNext();
-            },
-            child: const Text('Next'),
-          ),
-        ],
+      body: Center(
+        child: Column(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              GetBuilder<Controller>(
+                init: Controller(),
+                builder: (_) =>
+                    Text('Current value is: ${Get.find<Controller>().x}'),
+              ),
+              ElevatedButton(
+                onPressed: () {
+                  Get.find<Controller>().increment();
+                },
+                child: const Text('dd'),
+              ),
+            ]),
       ),
     );
   }
