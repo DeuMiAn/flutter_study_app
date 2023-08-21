@@ -33,7 +33,7 @@ class MyHomePage extends StatelessWidget {
       getPages: [
         GetPage(
           name: '/',
-          page: () => Home(),
+          page: () => const Home(),
         )
       ],
     );
