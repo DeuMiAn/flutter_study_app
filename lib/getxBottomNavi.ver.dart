@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         Get.put(RootController());
       }),
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const Root(),
+      home: Root(),
       getPages: [GetPage(name: '/detailPage', page: () => const DetailPage())],
     );
   }

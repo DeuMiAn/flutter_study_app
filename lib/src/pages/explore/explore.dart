@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_study_app/src/controller/root_controller.dart';
 import 'package:flutter_study_app/src/pages/explore/explore_detail_page.dart';
-import 'package:get/get.dart';
 
 class Explore extends StatelessWidget {
   const Explore({super.key});
@@ -23,12 +23,19 @@ class Explore extends StatelessWidget {
     );
   }
 
-  Widget _categoryMenu() {
+  Widget _categoryMenu(BuildContext context) {
     return Wrap(
       children: [
         GestureDetector(
           onTap: () {
-            Get.to(const ExploreDetailPage());
+            // Get.to(const ExploreDetailPage());
+            RootController.to.setCategoryPage(true);
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ExploreDetailPage(),
+              ),
+            );
           },
           child: Container(
             margin: const EdgeInsets.all(8),
@@ -80,7 +87,7 @@ class Explore extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: [_categoryMenu(), Expanded(child: _list())],
+      children: [_categoryMenu(context), Expanded(child: _list())],
     );
   }
 }

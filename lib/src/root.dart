@@ -10,60 +10,79 @@ class Root extends GetView<RootController> {
 
   @override
   Widget build(BuildContext context) {
-    return Obx(
-      () => Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: const Text("네비게이션 라우트 샘플"),
-        ),
-        body: IndexedStack(
-          index: controller.rootPageIndex.value,
-          children: const [
-            Home(),
-            Explore(),
-            Setting(),
-          ],
-        ),
-        bottomNavigationBar: BottomNavigationBar(
-          currentIndex: controller.rootPageIndex.value,
-          showSelectedLabels: true,
-          showUnselectedLabels: true,
-          onTap: controller.changeRootPageIndex,
-          items: const [
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.home,
-                color: Colors.grey,
+    return WillPopScope(
+      onWillPop: controller.onWillPop,
+      child: Obx(
+        () => Scaffold(
+          appBar: AppBar(
+            leading: controller.isCategoryPageOpen.value
+                ? GestureDetector(
+                    onTap: controller.back,
+                    child: const Icon(Icons.arrow_back_ios),
+                  )
+                : Container(),
+            centerTitle: true,
+            title: controller.isCategoryPageOpen.value
+                ? const Text("음악샘플")
+                : const Text("네비게이션 라우트 샘플"),
+          ),
+          body: IndexedStack(
+            index: controller.rootPageIndex.value,
+            children: [
+              const Home(),
+              Navigator(
+                key: controller.navigatorKey,
+                onGenerateRoute: (routeSettings) {
+                  return MaterialPageRoute(
+                    builder: (context) => const Explore(),
+                  );
+                },
               ),
-              label: 'home',
-              activeIcon: Icon(
-                Icons.home,
-                color: Colors.blue,
+              // Explore(),
+              const Setting(),
+            ],
+          ),
+          bottomNavigationBar: BottomNavigationBar(
+            currentIndex: controller.rootPageIndex.value,
+            showSelectedLabels: true,
+            showUnselectedLabels: true,
+            onTap: controller.changeRootPageIndex,
+            items: const [
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.home,
+                  color: Colors.grey,
+                ),
+                label: 'home',
+                activeIcon: Icon(
+                  Icons.home,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.explore,
-                color: Colors.grey,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.explore,
+                  color: Colors.grey,
+                ),
+                label: 'explore',
+                activeIcon: Icon(
+                  Icons.explore,
+                  color: Colors.blue,
+                ),
               ),
-              label: 'explore',
-              activeIcon: Icon(
-                Icons.explore,
-                color: Colors.blue,
+              BottomNavigationBarItem(
+                icon: Icon(
+                  Icons.settings,
+                  color: Colors.grey,
+                ),
+                label: 'settings',
+                activeIcon: Icon(
+                  Icons.settings,
+                  color: Colors.blue,
+                ),
               ),
-            ),
-            BottomNavigationBarItem(
-              icon: Icon(
-                Icons.settings,
-                color: Colors.grey,
-              ),
-              label: 'settings',
-              activeIcon: Icon(
-                Icons.settings,
-                color: Colors.blue,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
